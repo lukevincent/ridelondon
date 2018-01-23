@@ -1,95 +1,154 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/css/app.css">
+</head>
+<body>
 
-        <title>Laravel</title>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+<div id="results" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
+<script type="text/javascript">
+Highcharts.chart('results', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Rider finish times'
+    },
+    subtitle: {
+        text: 'Source: ridelondon.com'
+    },
+    xAxis: {
+        categories: {!! $results->pluck("finish_time") !!},
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'No. of rinder'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Rider times',
+        data: {{ $results->pluck('total_riders') }}
 
-            .full-height {
-                height: 100vh;
-            }
+    }]
+});
+</script>
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+<div id="finish_line" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-            .position-ref {
-                position: relative;
-            }
+<script type="text/javascript">
+Highcharts.chart('finish_line', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Rider finish times'
+    },
+    subtitle: {
+        text: 'Source: ridelondon.com'
+    },
+    xAxis: {
+        categories: {!! $grouped_finish_line_times->pluck("time_of_day") !!},
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'No. of rinder'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Rider times',
+        data: {{ $grouped_finish_line_times->pluck('count') }}
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+    }]
+});
+</script>
 
-            .content {
-                text-align: center;
-            }
 
-            .title {
-                font-size: 84px;
-            }
+<div id="start_time" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
+<script type="text/javascript">
+Highcharts.chart('start_time', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Start time correlation'
+    },
+    subtitle: {
+        text: 'Source: ridelondon.com'
+    },
+    xAxis: {
+        categories: {!! $starttime->pluck('est_start_time') !!},
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Time taken (in seconds)'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        },
+        series:{
+            turboThreshold: 0
+        }
+    },
+    series: [{
+        name: 'Rider times',
+        data: {!! $starttime->pluck("finish_time") !!}
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
+    }]
+});
+</script>
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
-    </body>
+<script type="text/javascript" src="/js/app.js"></script>
+</body>
 </html>
