@@ -62,7 +62,7 @@ Highcharts.chart('finish_line', {
         type: 'column'
     },
     title: {
-        text: 'Rider finish times'
+        text: 'Finish line crossing times'
     },
     subtitle: {
         text: 'Source: ridelondon.com'
@@ -74,7 +74,7 @@ Highcharts.chart('finish_line', {
     yAxis: {
         min: 0,
         title: {
-            text: 'No. of rinder'
+            text: 'No. of riders'
         }
     },
     tooltip: {
@@ -92,7 +92,7 @@ Highcharts.chart('finish_line', {
         }
     },
     series: [{
-        name: 'Rider times',
+        name: 'Crossing the finish line times',
         data: {{ $grouped_finish_line_times->pluck('count') }}
 
     }]
@@ -141,7 +141,7 @@ Highcharts.chart('start_time', {
         }
     },
     series: [{
-        name: 'Rider times',
+        name: 'Rider start times',
         data: {!! $starttime->pluck("finish_time") !!}
 
     }]
