@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Ride London</title>
     <link rel="stylesheet" type="text/css" href="/css/app.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 
-<h1>{{ $rider->name }}</h1>
-<p>Finish time: {{ $rider->finish_time }}</p>
-<p>Finish time crossing time: {{ $rider->splits->where('split_name', '=', 'FINISH')->first()->time_of_day }}</p>
+<div id="app">
+    <rider-component></rider-component>
+</div>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -152,7 +153,7 @@ Highcharts.chart('start_time', {
 });
 </script>
 
-
-<script type="text/javascript" src="/js/app.js"></script>
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
