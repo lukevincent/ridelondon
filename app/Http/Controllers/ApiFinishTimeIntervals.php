@@ -12,6 +12,9 @@ class ApiFinishTimeIntervals extends Controller
 {
     public function index()
     {
+
+    	$rider = Rider::findOrFail('999999195DB36C000007AF2D');
+
     	//$results = DB::select( DB::raw("select finish_time, count(*) as count from riders where event_state = 'finished' and event = '100 Miles' and flagged != true and finish_time != '00:00:00' group by UNIX_TIMESTAMP(finish_time) DIV 60") );
 		$results = DB::table('riders')
                      ->select(DB::raw('finish_time, count(*) as total_riders'))
@@ -48,6 +51,6 @@ class ApiFinishTimeIntervals extends Controller
 
 		//return $starttime;
 
-        return view('welcome', compact('results', 'grouped_finish_line_times', 'starttime'));
+        return view('welcome', compact('rider', 'results', 'grouped_finish_line_times', 'starttime'));
     }
 }

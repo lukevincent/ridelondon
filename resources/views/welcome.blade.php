@@ -6,6 +6,10 @@
 </head>
 <body>
 
+<h1>{{ $rider->name }}</h1>
+<p>Finish time: {{ $rider->finish_time }}</p>
+<p>Finish time crossing time: {{ $rider->splits->where('split_name', '=', 'FINISH')->first()->time_of_day }}</p>
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
